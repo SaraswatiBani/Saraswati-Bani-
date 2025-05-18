@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logo Float</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    #schoolLogo.floating {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 60px;
+      height: 60px;
+      /* Remove transition during drag, only enable when not dragging */
+      transition: all 0.2s ease-in-out;
+      z-index: 999;
+      cursor: grab;
+      user-select: none; /* Prevent text selection while dragging */
+    }
+    #schoolLogo.floating.dragging {
+      cursor: grabbing;
+      transition: none !important; /* Disable transition during drag */
+    }
+    body.no-scroll {
+      overflow: hidden;
+      touch-action: none;
+    }
+  </style>
+</head>
+<body class="bg-beige text-gray-800 font-sans">
+
+  <!-- Floating Menu -->
+  <div id="floatingMenu" class="hidden fixed top-24 left-4 bg-white rounded shadow-lg p-3 space-y-2 z-50">
+    <button class="block w-full text-left text-gray-900 font-semibold hover:underline">👨‍🏫 Staff</button>
+    <button class="block w-full text-left text-gray-900 font-semibold hover:underline">❓ Help</button>
+  </div>
+
+  <!-- Header -->
+  <header class="bg-blue-900 text-white py-6 shadow-md">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+      <div class="flex items-center gap-4">
+        <img
+          id="schoolLogo"
+          src="https://i.postimg.cc/8P4P7L4m/Chat-GPT-Image-May-17-2025-07-46-57-AM.png"
+          alt="Saraswati School Logo"
+          class="h-20 w-20 rounded-full"
+          align="left" />
+        <div>
+          <h1 class="text-3xl md:text-5xl font-bold">श्री सरस्वती माध्यमिक विद्यालय</h1>
+          <p class="text-lg md:text-base">📍 कृष्णपुर-०२, बाणी, कञ्चनपुर, काठमाडौँ, नेपाल</p>
+          <p class="text-lg">📚 सिकाइ | 📈 प्रगति | अनुशासन |🌟 उत्कृष्टता</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="py-12 bg-white">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+      <div class="w-full md:w-1/2 mb-8 md:mb-0">
+        <h2 class="text-4xl font-bold text-blue-900 mb-4">श्री सरस्वती माध्यमिक विद्यालयमा हादिक् स्वागत छ !!!</h2>
+        <p class="text-2xl">जिज्ञासा, अनुशासन, प्रवर्द्धन र उत्कृष्टता यही नै हाम्रो पहिलो प्राथमिकता !!!</p>
+        <p class="mb-4 font-semibold">👨‍🏫 प्रधानाध्यापक: अम्भा दत्त बणु</p>
+        <a href="#about" class="inline-block bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600">थप जान्नुहोस्</a>
+      </div>
+    <img src="https://i.postimg.cc/v8WmdJ6j/Picsart-25-05-17-21-06-57-284.jpg" alt="School image" />
+
+    </div>
+  </section>
+
+  <!-- Facilities -->
+  <section id="about" class="py-12 bg-blue-50">
+    <div class="container mx-auto px-4">
+      <h3 class="text-3xl font-semibold text-center text-blue-900 mb-8">हाम्रा सुविधाहरू</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="p-6 text-center bg-white shadow rounded">🧪 जीवविज्ञान प्रयोगशाला</div>
+        <div class="p-6 text-center bg-white shadow rounded">🔬 विज्ञान प्रयोगशाला</div>
+        <div class="p-6 text-center bg-white shadow rounded">🏟️ ठूलो खेल मैदान</div>
+        <div class="p-6 text-center bg-white shadow rounded">🎠 बच्चाहरूको खेल क्षेत्र</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Academics -->
+  <section class="py-12 bg-white">
+    <div class="container mx-auto px-4">
+      <h3 class="text-3xl font-semibold text-center text-blue-900 mb-8">शैक्षिक तहहरू</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div class="p-6 bg-blue-100 rounded shadow">📘 नर्सरी - कक्षा ५</div>
+        <div class="p-6 bg-blue-100 rounded shadow">📗 कक्षा ६ - १०</div>
+        <div class="p-6 bg-blue-100 rounded shadow">📙 कक्षा ११ - १२ (विज्ञान/प्राविधिक)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-900 text-white text-center py-6 mt-12">
+    <p>© <script>document.write(new Date().getFullYear())</script> श्री सरस्वती माध्यमिक विद्यालय । सर्वाधिकार सुरक्षित।</p>
+  </footer>
+
+  <!-- Floating Logo Script -->
+  <script>
+    const logo = document.getElementById('schoolLogo');
+    const menu = document.getElementById('floatingMenu');
+    let isFloating = false;
+    let isDragging = false;
+    let offsetX = 0, offsetY = 0;
+    let targetX = 0, targetY = 0;
+    let animationFrameId = null;
+
+    function keepLogoInBounds(x, y) {
+      const logoRect = logo.getBoundingClientRect();
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+
+      x = Math.max(0, Math.min(screenWidth - logoRect.width, x));
+      y = Math.max(0, Math.min(screenHeight - logoRect.height, y));
+
+      return { x, y };
+    }
+
+    function updatePosition() {
+      const { x, y } = keepLogoInBounds(targetX, targetY);
+      logo.style.left = `${x}px`;
+      logo.style.top = `${y}px`;
+      animationFrameId = null;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 200 && !isFloating) {
+        logo.classList.add('floating');
+        isFloating = true;
+      } else if (window.scrollY <= 200 && isFloating) {
+        logo.classList.remove('floating');
+        isFloating = false;
+        menu.classList.add('hidden');
+      }
+    });
+
+    // Mouse drag
+    logo.addEventListener('mousedown', (e) => {
+      if (!isFloating) return;
+      isDragging = true;
+      logo.classList.add('dragging');
+      const rect = logo.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+      document.body.classList.add('no-scroll');
+      e.preventDefault();
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      logo.classList.remove('dragging');
+      document.body.classList.remove('no-scroll');
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging || !isFloating) return;
+      targetX = e.clientX - offsetX;
+      targetY = e.clientY - offsetY;
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(updatePosition);
+      }
+    });
+
+    // Touch drag (mobile)
+    logo.addEventListener('touchstart', (e) => {
+      if (!isFloating) return;
+      isDragging = true;
+      logo.classList.add('dragging');
+      const rect = logo.getBoundingClientRect();
+      const touch = e.touches[0];
+      offsetX = touch.clientX - rect.left;
+      offsetY = touch.clientY - rect.top;
+      document.body.classList.add('no-scroll');
+      e.preventDefault();
+    });
+
+    document.addEventListener('touchend', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      logo.classList.remove('dragging');
+      document.body.classList.remove('no-scroll');
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (!isDragging || !isFloating) return;
+      const touch = e.touches[0];
+      targetX = touch.clientX - offsetX;
+      targetY = touch.clientY - offsetY;
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(updatePosition);
+      }
+    });
+
+    // Toggle menu on click only if not dragging
+    logo.addEventListener('click', () => {
+      if (!isDragging && isFloating) {
+        menu.classList.toggle('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

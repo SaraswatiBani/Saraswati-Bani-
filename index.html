@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Saraswati Bani.com</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="preload" as="image" href="https://i.postimg.cc/1zxNL77P/Screenshot-20250519-192331-2.png" />
   <style>
     #schoolLogo.floating {
       position: fixed;
@@ -25,25 +26,11 @@
       overflow: hidden;
       touch-action: none;
     }
-    .slide-wrapper {
-      min-width: 100%;
+    #slideshowContainer {
+      display: flex;
       height: 100%;
-      flex-shrink: 0;
+      transition: transform 0.7s ease-in-out;
     }
-  
-  
-  /* Your container already has: */
-.w-full.md\:w-1\/2.overflow-hidden.relative.h-\[400px\].rounded.shadow-lg {
-  /* height: 400px; overflow:hidden; rounded corners; */
-}
-
-/* No extra CSS needed for slideshow container except: */
-#slideshowContainer {
-  display: flex;
-  height: 100%;
-  transition: transform 0.7s ease-in-out;
-}
-
   </style>
 </head>
 <body class="bg-beige text-gray-800 font-sans">
@@ -54,26 +41,38 @@
     <button class="block w-full text-left text-gray-900 font-semibold hover:underline">❓ Help</button>
   </div>
 
-  <!-- Header -->
+  <!-- Updated Header -->
   <header class="bg-blue-900 text-white py-6 shadow-md">
-    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-      <div class="flex items-center gap-4">
+    <div class="container mx-auto px-4 flex items-center justify-between relative">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
         <img
           id="schoolLogo"
           src="https://i.postimg.cc/8P4P7L4m/Chat-GPT-Image-May-17-2025-07-46-57-AM.png"
           alt="Saraswati School Logo"
           class="h-20 w-20 rounded-full"
-          align="left" />
-        <div>
-          <h1 class="text-3xl md:text-5xl font-bold"> श्री सरस्वती माध्यमिक विद्यालय </h1>
-          <p class="text-lg md:text-base">📍 कृष्णपुर-०२, बाणी, कञ्चनपुर, काठमाडौँ, नेपाल</p>
-          <p class="text-lg">📚 सिकाइ | 📈 प्रगति | 🫂अनुशासन |🌟 उत्कृष्टता</p>
-        </div>
+        />
+      </div>
+
+      <!-- Center Text -->
+      <div class="absolute left-1/2 transform -translate-x-1/2 text-center">
+        <h1 class="text-2xl md:text-3xl font-bold whitespace-nowrap">श्री सरस्वती माध्यमिक विद्यालय</h1>
+        <p class="text-sm md:text-base">📍 कृष्णपुर-०२, बाणी, कञ्चनपुर, नेपाल</p>
+        <p class="text-xs md:text-sm">📚 सिकाइ | 📈 प्रगति | 🫂 अनुशासन | 🌟 उत्कृष्टता</p>
+      </div>
+
+      <!-- Nepal Flag -->
+      <div class="flex-shrink-0">
+        <img
+          src="https://i.postimg.cc/NFDKq9w6/Flag-of-Nepal-ezgif-com-gif-maker-1.gif"
+          alt="Nepal Flag"
+          class="h-23 w-12 object-contain"
+        />
       </div>
     </div>
   </header>
 
-  <!-- Hero Section with Image Slideshow -->
+  <!-- Hero Section -->
   <section class="py-12 bg-white">
     <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
       <div class="w-full md:w-1/2 mb-8 md:mb-0">
@@ -82,18 +81,15 @@
         <p class="mb-4 font-semibold">👨‍🏫 प्रधानाध्यापक: अम्भा दत्त बणु</p>
         <a href="#about" class="inline-block bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600">थप जान्नुहोस्</a>
       </div>
-      <br>
-     <div class="w-full md:w-1/2 overflow-hidden relative h-[400px] rounded shadow-lg">
-  <div id="slideshowContainer" class="flex h-full transition-transform duration-700 ease-in-out">
-    <!-- Images will be injected by JavaScript -->
-  </div>
-</div>
-
-
+      <div class="w-full md:w-1/2 overflow-hidden relative h-[400px] rounded shadow-lg">
+        <div id="slideshowContainer" class="flex h-full transition-transform duration-700 ease-in-out">
+          <!-- Injected by JS -->
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Facilities -->
+  <!-- Facilities Section -->
   <section id="about" class="py-12 bg-blue-50">
     <div class="container mx-auto px-4">
       <h3 class="text-3xl font-semibold text-center text-blue-900 mb-8">हाम्रा सुविधाहरू</h3>
@@ -123,25 +119,20 @@
     <p>© <script>document.write(new Date().getFullYear())</script> श्री सरस्वती माध्यमिक विद्यालय । सर्वाधिकार सुरक्षित।</p>
   </footer>
 
-  <!-- Floating Logo Script -->
+  <!-- Scripts -->
   <script>
     const logo = document.getElementById('schoolLogo');
     const menu = document.getElementById('floatingMenu');
-    let isFloating = false;
-    let isDragging = false;
-    let offsetX = 0, offsetY = 0;
-    let targetX = 0, targetY = 0;
+    let isFloating = false, isDragging = false;
+    let offsetX = 0, offsetY = 0, targetX = 0, targetY = 0;
     let animationFrameId = null;
 
     function keepLogoInBounds(x, y) {
-      const logoRect = logo.getBoundingClientRect();
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
-
-      x = Math.max(0, Math.min(screenWidth - logoRect.width, x));
-      y = Math.max(0, Math.min(screenHeight - logoRect.height, y));
-
-      return { x, y };
+      const rect = logo.getBoundingClientRect();
+      return {
+        x: Math.max(0, Math.min(window.innerWidth - rect.width, x)),
+        y: Math.max(0, Math.min(window.innerHeight - rect.height, y))
+      };
     }
 
     function updatePosition() {
@@ -174,7 +165,6 @@
     });
 
     document.addEventListener('mouseup', () => {
-      if (!isDragging) return;
       isDragging = false;
       logo.classList.remove('dragging');
       document.body.classList.remove('no-scroll');
@@ -184,17 +174,15 @@
       if (!isDragging || !isFloating) return;
       targetX = e.clientX - offsetX;
       targetY = e.clientY - offsetY;
-      if (!animationFrameId) {
-        animationFrameId = requestAnimationFrame(updatePosition);
-      }
+      if (!animationFrameId) animationFrameId = requestAnimationFrame(updatePosition);
     });
 
     logo.addEventListener('touchstart', (e) => {
       if (!isFloating) return;
       isDragging = true;
       logo.classList.add('dragging');
-      const rect = logo.getBoundingClientRect();
       const touch = e.touches[0];
+      const rect = logo.getBoundingClientRect();
       offsetX = touch.clientX - rect.left;
       offsetY = touch.clientY - rect.top;
       document.body.classList.add('no-scroll');
@@ -202,7 +190,6 @@
     });
 
     document.addEventListener('touchend', () => {
-      if (!isDragging) return;
       isDragging = false;
       logo.classList.remove('dragging');
       document.body.classList.remove('no-scroll');
@@ -213,9 +200,7 @@
       const touch = e.touches[0];
       targetX = touch.clientX - offsetX;
       targetY = touch.clientY - offsetY;
-      if (!animationFrameId) {
-        animationFrameId = requestAnimationFrame(updatePosition);
-      }
+      if (!animationFrameId) animationFrameId = requestAnimationFrame(updatePosition);
     });
 
     logo.addEventListener('click', () => {
@@ -224,35 +209,33 @@
       }
     });
 
-    // Slideshow Logic
+    // Slideshow
     const imageUrls = [
-  "https://i.postimg.cc/GtZSxrDC/Messenger-creation-7-CA7-B14-A-35-A7-472-E-99-FB-B50083425-E27.jpg",
-  "https://i.postimg.cc/v8WmdJ6j/Picsart-25-05-17-21-06-57-284.jpg",
-  "https://i.postimg.cc/tRffjdMM/Messenger-creation-07-DA2-D72-C3-F9-4-B35-91-BA-E79155127082.jpg",
-  "https://i.postimg.cc/8P4P7L4m/Chat-GPT-Image-May-17-2025-07-46-57-AM.png"
-];
+      "https://i.postimg.cc/1zxNL77P/Screenshot-20250519-192331-2.png",
+      "https://i.postimg.cc/GtZSxrDC/Messenger-creation-7-CA7-B14-A-35-A7-472-E-99-FB-B50083425-E27.jpg",
+      "https://i.postimg.cc/v8WmdJ6j/Picsart-25-05-17-21-06-57-284.jpg",
+      "https://i.postimg.cc/tRffjdMM/Messenger-creation-07-DA2-D72-C3-F9-4-B35-91-BA-E79155127082.jpg",
+      "https://i.postimg.cc/7YmyNqqT/Chat-GPTImage-May17202507-46-57-AM.png"
+    ];
+    
+    const container = document.getElementById("slideshowContainer");
+    container.innerHTML = "";
 
-const container = document.getElementById("slideshowContainer");
+    imageUrls.forEach(url => {
+      const imgDiv = document.createElement("div");
+      imgDiv.style.minWidth = "100%";
+      imgDiv.style.height = "400px";
+      imgDiv.innerHTML = `<img src="${url}" loading="lazy" alt="School Event" style="width: 100%; height: 100%; object-fit: cover;" />`;
+      container.appendChild(imgDiv);
+    });
 
-// Clear container first (optional if empty)
-container.innerHTML = "";
+    let index = 0;
+    const total = imageUrls.length;
 
-imageUrls.forEach(url => {
-  const imgDiv = document.createElement("div");
-  imgDiv.style.minWidth = "100%";  // Take full width of container
-  imgDiv.style.height = "400px";   // Keep same height as container (match your CSS)
-  imgDiv.innerHTML = `<img src="${url}" style="width: 100%; height: 100%; object-fit: cover;" />`;
-  container.appendChild(imgDiv);
-});
-
-let index = 0;
-const total = imageUrls.length;
-
-setInterval(() => {
-  index = (index + 1) % total;
-  container.style.transform = `translateX(-${index * 100}%)`;
-}, 2000);
-
+    setInterval(() => {
+      index = (index + 1) % total;
+      container.style.transform = `translateX(-${index * 100}%)`;
+    }, 2000);
   </script>
 </body>
 </html>
